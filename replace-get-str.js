@@ -19,8 +19,9 @@ const replaceForFile = (file) => {
     let fileContent = fs.readFileSync(file, 'utf8');
 
     let prevFileContent = fileContent;
-
-    fileContent = fileContent.replace(/getStr\('(.*)'\)/g, 'getStr(LocaleKeys.$1)');
+    // there can be spaces and line breaks between the function name and the
+    // quote of the key
+    fileContent = fileContent.replace(/getStr\s*\(\s*(['"])([^'"]+)\1\s*\)/g, 'getStr(LocaleKeys.$2)');
 
     // if the content changed, add the import
     if (prevFileContent !== fileContent) {
